@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/categorias")
@@ -63,8 +64,12 @@ public class CategoriaController {
     }
 
     @PostMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            service.eliminar(id);
+        } catch (IllegalStateException e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/categorias";
     }
 }
