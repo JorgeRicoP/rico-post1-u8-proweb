@@ -2,6 +2,8 @@ package com.universidad.catalogo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categorias")
@@ -20,6 +22,10 @@ public class Categoria {
     @Column(name = "descripcion", length = 250)
     private String descripcion;
 
+    // Lado inverso: sin @JoinColumn y sin cascade REMOVE (ver README)
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private List<Producto> productos = new ArrayList<>();
+
     public Categoria() {}
 
     public Long getId() { return id; }
@@ -28,4 +34,5 @@ public class Categoria {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public List<Producto> getProductos() { return productos; }
 }
